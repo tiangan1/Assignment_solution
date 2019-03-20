@@ -1,0 +1,224 @@
+//answer i
+mysql> select *
+    -> from language
+    -> order by name;
++-------------+----------+---------------------+
+| language_id | name     | last_update         |
++-------------+----------+---------------------+
+|           1 | English  | 2006-02-15 05:02:19 |
+|           5 | French   | 2006-02-15 05:02:19 |
+|           6 | German   | 2006-02-15 05:02:19 |
+|           2 | Italian  | 2006-02-15 05:02:19 |
+|           3 | Japanese | 2006-02-15 05:02:19 |
+|           4 | Mandarin | 2006-02-15 05:02:19 |
++-------------+----------+---------------------+
+6 rows in set (0.00 sec)
+
+
+//answer ii
+mysql> select concat(first_name, last_name) 
+    -> from actor
+    -> where last_name like '%BER%'
+    -> order by first_name;
++-------------------------------+
+| concat(first_name, last_name) |
++-------------------------------+
+| CHRISTOPHERBERRY              |
+| DARYLWAHLBERG                 |
+| HENRYBERRY                    |
+| KARLBERRY                     |
+| LIZABERGMAN                   |
+| NICKWAHLBERG                  |
+| PARKERGOLDBERG                |
+| VIVIENBERGEN                  |
++-------------------------------+
+8 rows in set (0.01 sec)
+
+
+//answer iii
+mysql> select count(*)
+    -> from 
+    -> (select count(*)
+    -> from actor
+    -> group by last_name
+    -> having count(*)=1
+    -> )actor;
++----------+
+| count(*) |
++----------+
+|       66 |
++----------+
+1 row in set (0.00 sec)
+
+
+//answer iv
+mysql> select count(*)
+    ->  from film
+    -> where description like '%crocodile%' and  description like '%shark%';
++----------+
+| count(*) |
++----------+
+|       10 |
++----------+
+1 row in set (0.01 sec)
+
+
+//answer v
+mysql> select concat(first_name,last_name),release_year
+    -> from actor, film, film_actor
+    -> where description like '%crocodile%' and  description like '%shark%'
+    -> and actor.actor_id=film_actor.actor_id and film.film_id=film_actor.film_id
+    -> order by last_name;
++------------------------------+--------------+
+| concat(first_name,last_name) | release_year |
++------------------------------+--------------+
+| KIRSTENAKROYD                |         2006 |
+| KIMALLEN                     |         2006 |
+| AUDREYBAILEY                 |         2006 |
+| JULIABARRYMORE               |         2006 |
+| VIVIENBASINGER               |         2006 |
+| VIVIENBERGEN                 |         2006 |
+| KARLBERRY                    |         2006 |
+| HENRYBERRY                   |         2006 |
+| KARLBERRY                    |         2006 |
+| LAURABRODY                   |         2006 |
+| ZEROCAGE                     |         2006 |
+| JOHNNYCAGE                   |         2006 |
+| JONCHASE                     |         2006 |
+| FREDCOSTNER                  |         2006 |
+| FREDCOSTNER                  |         2006 |
+| JENNIFERDAVIS                |         2006 |
+| SUSANDAVIS                   |         2006 |
+| GINADEGENERES                |         2006 |
+| JULIANNEDENCH                |         2006 |
+| ROCKDUKAKIS                  |         2006 |
+| ALGARLAND                    |         2006 |
+| HUMPHREYGARLAND              |         2006 |
+| EWANGOODING                  |         2006 |
+| PENELOPEGUINESS              |         2006 |
+| WILLIAMHACKMAN               |         2006 |
+| MEGHAWKE                     |         2006 |
+| WOODYHOFFMAN                 |         2006 |
+| MORGANHOPKINS                |         2006 |
+| JANEJACKMAN                  |         2006 |
+| ALBERTJOHANSSON              |         2006 |
+| RAYJOHANSSON                 |         2006 |
+| ALBERTJOHANSSON              |         2006 |
+| RAYJOHANSSON                 |         2006 |
+| MILLAKEITEL                  |         2006 |
+| FAYKILMER                    |         2006 |
+| MATTHEWLEIGH                 |         2006 |
+| GENEMCKELLEN                 |         2006 |
+| GRACEMOSTEL                  |         2006 |
+| GRACEMOSTEL                  |         2006 |
+| CHRISTIANNEESON              |         2006 |
+| ALBERTNOLTE                  |         2006 |
+| JAYNENOLTE                   |         2006 |
+| KENNETHPALTROW               |         2006 |
+| KIRSTENPALTROW               |         2006 |
+| SANDRAPECK                   |         2006 |
+| PENELOPEPINKETT              |         2006 |
+| CAMERONSTREEP                |         2006 |
+| JOHNSUVARI                   |         2006 |
+| KENNETHTORN                  |         2006 |
+| HELENVOIGHT                  |         2006 |
+| GROUCHOWILLIAMS              |         2006 |
+| MORGANWILLIAMS               |         2006 |
+| GENEWILLIS                   |         2006 |
+| HUMPHREYWILLIS               |         2006 |
+| WILLWILSON                   |         2006 |
+| FAYWOOD                      |         2006 |
+| UMAWOOD                      |         2006 |
+| MINNIEZELLWEGER              |         2006 |
++------------------------------+--------------+
+58 rows in set (0.01 sec)
+
+
+//answer vi
+mysql> select name, count(*)
+    -> from category, film_category
+    -> where category.category_id=film_category.category_id
+    -> group by film_category.category_id
+    -> having count(*) >= 40 and count(*) <=60
+    -> order by count(*) desc;
++----------+----------+
+| name     | count(*) |
++----------+----------+
+| Children |       60 |
+| Comedy   |       58 |
+| Travel   |       57 |
+| Classics |       57 |
+| Horror   |       56 |
+| Music    |       51 |
++----------+----------+
+6 rows in set (0.00 sec)
+
+
+//vii
+mysql> select concat(first_name,last_name)
+    -> from actor
+    -> where first_name=
+    -> (select first_name
+    -> from actor
+    -> where actor_id=24);
++------------------------------+
+| concat(first_name,last_name) |
++------------------------------+
+| CAMERONSTREEP                |
+| CAMERONWRAY                  |
+| CAMERONZELLWEGER             |
++------------------------------+
+3 rows in set (0.00 sec)
+
+
+//viii
+mysql> select concat(first_name,last_name)
+    -> from actor
+    -> where actor_id =
+    -> (select actor_id
+    -> from film_actor
+    -> group by actor_id
+    -> order by count(*) desc
+    -> limit 1);
++------------------------------+
+| concat(first_name,last_name) |
++------------------------------+
+| GINADEGENERES                |
++------------------------------+
+1 row in set (0.01 sec)
+
+
+//ix
+mysql> select name
+    -> from category,film,film_category 
+    -> where film.film_id=film_category.film_id 
+    -> and category.category_id=film_category.category_id
+    -> group by category.category_id 
+    -> having avg(length)> (select avg(length) from film);
++---------+
+| name    |
++---------+
+| Comedy  |
+| Drama   |
+| Foreign |
+| Games   |
+| Sports  |
++---------+
+5 rows in set (0.00 sec)
+
+
+//x
+mysql> select store,total_sales
+    -> from sales_by_store;
++---------------------+-------------+
+| store               | total_sales |
++---------------------+-------------+
+| Woodridge,Australia |    33726.77 |
+| Lethbridge,Canada   |    33679.79 |
++---------------------+-------------+
+2 rows in set (0.06 sec)
+
+
+
+
+
